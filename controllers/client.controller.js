@@ -10,12 +10,23 @@ async function createClient(req, res, next) {
 
     res.send( await ClientService.createClient(client));
 
-    logge.info(`POST /client - ${ JSON.stringify(client) }`);
+    global.logger.info(`POST /client - ${ JSON.stringify(client) }`);
   } catch (err) {
     next(err);
   }
 }
 
+async function getClients(req, res, next) {
+  try{
+    res.send(await ClientService.getClients());
+    global.logger.info("GET /client");
+  }
+  catch(err) {
+    next(err)
+  }
+}
+
 export default {
-  createClient
+  createClient,
+  getClients
 }
