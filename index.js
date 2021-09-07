@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import winston, { silly } from "winston";
+import winston from "winston";
 import clientsRouter from "./routes/client.route.js";
 import productsRouter from "./routes/product.route.js";
 import suppliersRouter from "./routes/supplier.route.js";
@@ -33,5 +33,10 @@ app.use("/client", clientsRouter);
 app.use("/product", productsRouter);
 app.use("/supplier", suppliersRouter);
 app.use("/sale", salesRouter);
+
+app.use((err, req, res, next) => {
+  logger.error(`${ req.method } ${ req.baseUrl } ${err.message}`);
+  res.status(400).send({ error: err.message });
+});
 
 app.listen(3000, () => console.log("API Started!"));
